@@ -20,12 +20,25 @@ public class HomeController {
 	public String home(@RequestParam(name = "search",required = false) String ip,Model model,HttpServletRequest request) throws Exception {
 		GeoData geoData = null;
 
+		String clientIp = ipService.getRequestIp(request);
+
 		if(ip == null) {
-			ip = ipService.getRequestIp(request);
+			ip = clientIp;
 		}
 
 		geoData = ipService.getIpData(ip);
-		model.addAttribute("geoData", geoData);
+
+		int returnCode = geoData.getReturnCode();
+
+		if(returnCode == 0) {
+			model.addAttribute("geoData", geoData);
+		}
+		else {
+			model.addAttribute("errorMsg",ipService.returnMsg(returnCode));
+		}
+
+		model.addAttribute("clientIp", clientIp);
+		model.addAttribute("searchIp", ip);
 
 		return "home";
 	}

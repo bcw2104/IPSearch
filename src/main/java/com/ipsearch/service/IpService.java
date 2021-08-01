@@ -22,6 +22,22 @@ public class IpService{
 		return geoData;
 	}
 
+	public String returnMsg(int returnCode) throws Exception {
+		String msg;
+
+		if(returnCode == 131000) {
+			msg = "지역정보를 찾을 수 없습니다. 다른 IP를 이용해서 조회하세요.";
+		}
+		else if(returnCode == 131001) {
+			msg = "공인 IP가 아니거나 IP 주소 형식이 잘못되었습니다.";
+		}
+		else {
+			msg = "서버에 오류가 발생하였습니다.";
+		}
+
+		return msg;
+	}
+
 	public String getRequestIp(HttpServletRequest request) {
 		String ip = request.getHeader("X-FORWARDED-FOR");
         if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {
