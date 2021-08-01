@@ -18,12 +18,12 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
-public class IpHandler {
+public class GeoLocationClient {
 	private final String accessKey;
 	private final String secretKey;
 	private final CloseableHttpClient httpClient;
 
-	public IpHandler(String accessKey, String secretKey) {
+	public GeoLocationClient(String accessKey, String secretKey) {
 		this.accessKey = accessKey;
 		this.secretKey = secretKey;
 
@@ -128,7 +128,6 @@ public class IpHandler {
 			response.close();
 		}
 
-		System.out.println(buffer.toString());
 		return buffer.toString();
 	}
 

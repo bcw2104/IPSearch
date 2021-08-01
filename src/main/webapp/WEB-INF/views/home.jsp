@@ -12,8 +12,8 @@
 		<input type="submit" value="검색"/>
 	</form>
 
-	<c:if test="${requestScope.ipData != null}">
-		<div>${requestScope.ipData}</div>
+	<c:if test="${requestScope.searchResult != null}">
+		<div>${requestScope.searchResult}</div>
 	</c:if>
 </body>
 </html>

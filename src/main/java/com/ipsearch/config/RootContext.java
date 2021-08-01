@@ -7,7 +7,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
-import com.ipsearch.util.IpHandler;
+import com.ipsearch.util.GeoLocationClient;
+import com.ipsearch.util.DataHandler;
 
 @Configuration
 @ComponentScan(basePackages = {"com.ipsearch.service","com.ipsearch.exception"})
@@ -17,9 +18,16 @@ public class RootContext {
     private Environment env;
 
 	@Bean
-	public IpHandler ipHander() {
-		IpHandler ipHandler = new IpHandler(env.getProperty("key.access"),env.getProperty("key.secret"));
+	public GeoLocationClient geoLocationClient() {
+		GeoLocationClient geoLocationClient = new GeoLocationClient(env.getProperty("key.access"),env.getProperty("key.secret"));
 
-		return ipHandler;
+		return geoLocationClient;
+	}
+
+	@Bean
+	public DataHandler dataHander() {
+		DataHandler dataHander = new DataHandler();
+
+		return dataHander;
 	}
 }
