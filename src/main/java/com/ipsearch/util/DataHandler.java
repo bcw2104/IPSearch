@@ -19,28 +19,27 @@ public class DataHandler {
 	public GeoData convertStringToGeoData(String jsonString) throws Exception {
 		JSONObject object = convertStringToJson(jsonString);
 		GeoData geoData = new GeoData();
-
 		int returnCode = 131002;			//Internal Server Error
 
 		if(object.containsKey("returnCode"))
 			returnCode = Integer.parseInt(object.get("returnCode").toString());
 
 		// 요청 성공
-		if(returnCode == 0) {
+		if(returnCode == 0 && object.containsKey("geoLocation")) {
 			JSONObject locationData = (JSONObject) object.get("geoLocation");
 
+			geoData.setRequestId(object.get("requestId").toString());
 			geoData.setCountry(locationData.get("country").toString());
 			geoData.setCode(locationData.get("code").toString());
 			geoData.setR1(locationData.get("r1").toString());
-			geoData.setR2(locationData.get("country").toString());
-			geoData.setR3(locationData.get("country").toString());
+			geoData.setR2(locationData.get("r2").toString());
+			geoData.setR3(locationData.get("r3").toString());
 			geoData.setLatitude(Double.parseDouble(locationData.get("lat").toString()));
 			geoData.setLongitude(Double.parseDouble(locationData.get("long").toString()));
 			geoData.setNet(locationData.get("net").toString());
 		}
 
 		geoData.setReturnCode(returnCode);
-		geoData.setRequestId(object.get("geoLocation").toString());
 
 		return geoData;
 	}
