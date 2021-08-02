@@ -1,0 +1,7 @@
+@charset "UTF-8";
+
+@import url('https://fonts.googleapis.com/css2?family=Gothic+A1&display=swap');
+
+.body-font,input{
+ 	font-family: 'Gothic A1', sans-serif;
+}
