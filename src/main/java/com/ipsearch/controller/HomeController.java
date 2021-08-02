@@ -10,11 +10,14 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import com.ipsearch.object.GeoData;
 import com.ipsearch.service.IpService;
+import com.ipsearch.service.MapService;
 
 @Controller
 public class HomeController {
 	@Autowired
 	private IpService ipService;
+	@Autowired
+	private MapService mapService;
 
 	@GetMapping("/")
 	public String home(@RequestParam(name = "search",required = false) String ip,Model model,HttpServletRequest request) throws Exception {
@@ -32,13 +35,14 @@ public class HomeController {
 
 		if(returnCode == 0) {
 			model.addAttribute("geoData", geoData);
+			model.addAttribute("clientId", mapService.getMapClientId());
+			model.addAttribute("searchIp", ip);
 		}
 		else {
 			model.addAttribute("errorMsg",ipService.returnMsg(returnCode));
 		}
 
 		model.addAttribute("clientIp", clientIp);
-		model.addAttribute("searchIp", ip);
 
 		return "home";
 	}

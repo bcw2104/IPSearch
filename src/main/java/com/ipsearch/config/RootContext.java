@@ -8,6 +8,7 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 
 import com.ipsearch.util.GeoLocationClient;
+import com.ipsearch.util.MapClient;
 import com.ipsearch.util.DataHandler;
 
 @Configuration
@@ -22,6 +23,13 @@ public class RootContext {
 		GeoLocationClient geoLocationClient = new GeoLocationClient(env.getProperty("key.access"),env.getProperty("key.secret"));
 
 		return geoLocationClient;
+	}
+
+	@Bean
+	public MapClient mapClient() {
+		MapClient mapClient = new MapClient(env.getProperty("key.clientId"));
+
+		return mapClient;
 	}
 
 	@Bean

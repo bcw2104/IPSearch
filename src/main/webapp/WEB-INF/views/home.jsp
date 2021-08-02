@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<c:set var="isKOR" value="${requestScope.geoData.country == 'KR'}"></c:set>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -11,9 +13,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
-
-<!-- Naver Dynamic Map -->
-<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=k8dv3edpau"></script>
 
 <link rel="stylesheet" href="/resources/css/common-min.css">
 <link rel="stylesheet" href="/resources/css/font-min.css">
@@ -47,16 +46,31 @@
 		   		<c:when test="${requestScope.geoData != null}">
 		   		<div class="mb-3">검색 IP : ${requestScope.searchIp}</div>
 				<ul class="nav nav-tabs">
+					<c:if test="${isKOR}">
 					<li class="nav-item"><a href="#map" class="nav-link active" data-toggle="tab">위치</a></li>
-					<li class="nav-item"><a href="#info" class="nav-link" data-toggle="tab">정보</a></li>
+					</c:if>
+					<li class="nav-item"><a href="#info" class="nav-link ${isKOR ? '' : 'active'}" data-toggle="tab">정보</a></li>
 				</ul>
 				<div class="tab-content py-3">
 					<div class="my-3">
 						<small class="text-danger font-weight-bold">※ 주의사항 : 제공되는 위치 정보는 정확하지 않을 수 있습니다.</small>
-						<div class="mt-2">위치: <span id="position">${requestScope.geoData.r1} ${requestScope.geoData.r2} ${requestScope.geoData.r3}</span></div>
+						<div class="mt-2">
+							<span>위치:</span>
+							<c:choose>
+								<c:when test="${isKOR}">
+									<span id="position">${requestScope.geoData.r1} ${requestScope.geoData.r2} ${requestScope.geoData.r3}</span>
+								</c:when>
+								<c:otherwise>
+									<span>해외 IP는 위치 정보가 표시되지 않습니다.</span>
+								</c:otherwise>
+							</c:choose>
+						</div>
 					</div>
+					<c:if test="${isKOR}">
 					<div class="tab-pane container fade show active" id="map">
 						<div id="map" style="width:100%;height:500px;"></div>
+						<!-- Naver Dynamic Map -->
+						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${requestScope.clientId}"></script>
 						<script type="text/javascript">
 							$(document).ready(function() {
 								var latlng = new naver.maps.LatLng(${requestScope.geoData.latitude}, ${requestScope.geoData.longitude});
@@ -85,7 +99,8 @@
 							});
 						</script>
 					</div>
-					<div class="tab-pane fade container" id="info">
+					</c:if>
+					<div class="tab-pane fade container ${isKOR ? '' : 'show active'}" id="info">
 						<table class="table table-borderless">
 							<thead>
 								<tr>
