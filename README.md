@@ -3,9 +3,13 @@
 ### 📄 개요
 IP 정보 및 위치 조회 프로그램
 
+<br/>
+
 ### 🛠️ Open API
 - Naver GeoLocation
 - Naver Web Dynamic Map 
+
+<br/>
 
 ### 📜 요구 기능
 - 사용자(Client)의 IP주소 표시 기능
@@ -15,12 +19,16 @@ IP 정보 및 위치 조회 프로그램
   * 검색된 IP의 위치를 지도에 표시
 - 사용자(Client)가 검색한 IP주소와 부가정보를 DB에 저장
 
+<br/>
+
 ### 📌 IP 검색 로직
 1. 대상 IP를 DB에서 탐색
     * 존재할 경우 : 반환 후 로직 종료
     * 존재하지 않을 경우 : 2번 동작 수행
 2. GeoLocation API를 통해 대상 IP 정보를 수집
 3. 수집된 IP 정보를 반환 및 DB에 저장
+
+<br/>
 
 ### 📈 개발 순서
 - Version 1 -> Naver GeoLocation 관련 서비스 구현 <strong>(완료)</strong>
@@ -32,6 +40,8 @@ IP 정보 및 위치 조회 프로그램
   * UI 개선
 - Version 3 -> DataBase
   * DB 연결 및 IP 데이터 수집, 반환 기능 구현
+
+<br/>
 
 ### :hammer: Tech
 <img src="https://img.shields.io/badge/HTML5-E34F26?style=flat-square&logo=HTML5&logoColor=white"/></a> 
