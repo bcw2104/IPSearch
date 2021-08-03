@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="isKOR" value="${requestScope.geoData.country == 'KR'}"></c:set>
+<c:set var="success" value="${requestScope.returnData != null}"></c:set>
 
 <!DOCTYPE html>
 <html>
@@ -19,17 +19,7 @@
 
 </head>
 <body class="body-font">
-	<nav class="navbar bg-primary navbar-dark">
-	    <div class="navbar-header">
-	        <div class="px-2">
-	            <a href="/" class="navbar-brand font-24">
-	            	<img class="mr-1" alt="logo" src="/resources/images/logo.png" style="width:30px;">
-	            	<span>IP Search</span>
-	            </a>
-	            <span class="text-white">접속 IP : ${requestScope.clientIp}</span>
-	        </div>
-	    </div>
-	</nav>
+	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 
 	<div class="container my-5">
 		<form action="/" method="get">
@@ -42,38 +32,27 @@
 		</form>
 
 		<div class="content mt-3">
-			<c:choose>
-		   		<c:when test="${requestScope.geoData != null}">
-		   		<div class="mb-3">검색 IP : ${requestScope.searchIp}</div>
+		   		<div class="mb-3">검색 : ${requestScope.query}</div>
 				<ul class="nav nav-tabs">
-					<c:if test="${isKOR}">
-					<li class="nav-item"><a href="#map" class="nav-link active" data-toggle="tab">위치</a></li>
-					</c:if>
-					<li class="nav-item"><a href="#info" class="nav-link ${isKOR ? '' : 'active'}" data-toggle="tab">정보</a></li>
+					<li class="nav-item"><a href="#map" id="tab-map" class="nav-link" data-toggle="tab">지도</a></li>
+					<li class="nav-item"><a href="#info" id="tab-info" class="nav-link active" data-toggle="tab">정보</a></li>
 				</ul>
 				<div class="tab-content py-3">
 					<div class="my-3">
-						<small class="text-danger font-weight-bold">※ 주의사항 : 제공되는 위치 정보는 정확하지 않을 수 있습니다.</small>
+						<small class="text-danger font-weight-bold">※ 주의사항 : 제공되는 위치 정보는 정확하지 않을 수 있습니다	.</small>
 						<div class="mt-2">
 							<span>위치:</span>
-							<c:choose>
-								<c:when test="${isKOR}">
-									<span id="position">${requestScope.geoData.r1} ${requestScope.geoData.r2} ${requestScope.geoData.r3}</span>
-								</c:when>
-								<c:otherwise>
-									<span>해외 IP는 위치 정보가 표시되지 않습니다.</span>
-								</c:otherwise>
-							</c:choose>
+							<span id="position">${success ? requestScope.returnData.addr : '위치 정보를 찾을 수 없습니다.'}</span>
 						</div>
 					</div>
-					<c:if test="${isKOR}">
-					<div class="tab-pane container fade show active" id="map">
+					<div class="tab-pane container fade" id="map">
 						<div id="map" style="width:100%;height:500px;"></div>
+						<c:if test="${success}">
 						<!-- Naver Dynamic Map -->
 						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${requestScope.clientId}"></script>
 						<script type="text/javascript">
 							$(document).ready(function() {
-								var latlng = new naver.maps.LatLng(${requestScope.geoData.latitude}, ${requestScope.geoData.longitude});
+								var latlng = new naver.maps.LatLng(${requestScope.returnData.latitude}, ${requestScope.returnData.longitude});
 								var address = $("#position").text();
 								var map = new naver.maps.Map('map', {
 									mapTypeId : naver.maps.MapTypeId.NORMAL,
@@ -96,49 +75,18 @@
 									fillOpacity : 0.05,
 								    map: map
 								});
+
+								$("#tab-map").trigger("click");
 							});
 						</script>
+						</c:if>
 					</div>
-					</c:if>
-					<div class="tab-pane fade container ${isKOR ? '' : 'show active'}" id="info">
-						<table class="table table-borderless">
-							<thead>
-								<tr>
-									<th>항목</th>
-									<th>정보</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>국가 코드:</td>
-									<td>${requestScope.geoData.country}</td>
-								</tr>
-								<tr>
-									<td>행정구역 코드:</td>
-									<td>${requestScope.geoData.code}</td>
-								</tr>
-								<tr>
-									<td>위도:</td>
-									<td>${requestScope.geoData.latitude}</td>
-								</tr>
-								<tr>
-									<td>경도:</td>
-									<td>${requestScope.geoData.longitude}</td>
-								</tr>
-								<tr>
-									<td>통신사:</td>
-									<td>${requestScope.geoData.net}</td>
-								</tr>
-							</tbody>
-						</table>
+					<div class="tab-pane fade container show active p-0" id="info">
+						<textarea readonly="readonly" disabled="disabled" class="w-100 p-4" style="min-height:500px">${requestScope.returnContent}</textarea>
 					</div>
 				</div>
-		   		</c:when>
-		   		<c:otherwise>
-					<div>${requestScope.errorMsg}</div>
-		   		</c:otherwise>
-		   	</c:choose>
 	   	</div>
    	</div>
+   	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 </body>
 </html>

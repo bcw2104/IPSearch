@@ -21,11 +21,19 @@ import org.apache.http.impl.client.HttpClientBuilder;
 public class GeoLocationClient {
 	private final String accessKey;
 	private final String secretKey;
+	final String requestMethod;
+	final String hostName;
+	final String requestUrl;
+
 	private final CloseableHttpClient httpClient;
 
 	public GeoLocationClient(String accessKey, String secretKey) {
 		this.accessKey = accessKey;
 		this.secretKey = secretKey;
+
+		this.requestMethod = "GET";
+		this.hostName = "https://geolocation.apigw.ntruss.com";
+		this.requestUrl= "/geolocation/v2/geoLocation";
 
 		final int timeout = 5000;
 		final RequestConfig requestConfig = RequestConfig.custom()
@@ -42,9 +50,6 @@ public class GeoLocationClient {
 	}
 
 	private HttpGet setRequest(final String ip) throws Exception {
-		final String requestMethod = "GET";
-		final String hostName = "https://geolocation.apigw.ntruss.com";
-		final String requestUrl= "/geolocation/v2/geoLocation";
 		final String enc = "utf8";
 		final String ext = "t";
 		final String responseFormatType = "json";
@@ -76,7 +81,7 @@ public class GeoLocationClient {
 		return Long.toString(System.currentTimeMillis());
 	}
 
-	private static String getRequestQueryString(final ArrayList<String> requestParameters) {
+	private String getRequestQueryString(final ArrayList<String> requestParameters) {
 		final StringBuilder queryString = new StringBuilder();
 
 		final Iterator<String> paramIter = requestParameters.iterator();

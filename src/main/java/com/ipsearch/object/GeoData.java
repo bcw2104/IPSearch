@@ -5,9 +5,7 @@ public class GeoData {
 	private String requestId;
 	private String country;
 	private String code;
-	private String r1;
-	private String r2;
-	private String r3;
+	private String addr;
 	private double latitude;
 	private double longitude;
 	private String net;
@@ -17,9 +15,7 @@ public class GeoData {
 		this.requestId = null;
 		this.country = null;
 		this.code = null;
-		this.r1 = null;
-		this.r2 = null;
-		this.r3 = null;
+		this.addr = null;
 		this.latitude = 0;
 		this.longitude = 0;
 		this.net = null;
@@ -57,28 +53,12 @@ public class GeoData {
 		this.code = code;
 	}
 
-	public String getR1() {
-		return r1;
+	public String getAddr() {
+		return addr;
 	}
 
-	public void setR1(String r1) {
-		this.r1 = r1;
-	}
-
-	public String getR2() {
-		return r2;
-	}
-
-	public void setR2(String r2) {
-		this.r2 = r2;
-	}
-
-	public String getR3() {
-		return r3;
-	}
-
-	public void setR3(String r3) {
-		this.r3 = r3;
+	public void setAddr(String addr) {
+		this.addr = addr;
 	}
 
 	public double getLatitude() {
@@ -105,16 +85,16 @@ public class GeoData {
 		this.net = net;
 	}
 
-	public String getGeoLocation() {
+	public String print() {
 		StringBuilder builder = new StringBuilder();
 
-		builder.append("Location");
-		builder.append("\n국가 코드 : " + country);
-		builder.append("\n행정구역 코드 : " + code);
-		builder.append("\n위치 : " + r1 + " " + r2 + " " + r3);
-		builder.append("\n위도 : " + latitude);
-		builder.append("\n경도 : " + longitude);
-		builder.append("\n통신사 : " + net);
+		builder.append("===================== IP 정보 =====================\n");
+		builder.append("\n국가 코드 : 						" + country);
+		builder.append("\n행정구역 코드 : 					" + code);
+		builder.append("\n위치 : 							" + addr);
+		builder.append("\n위도 : 							" + latitude);
+		builder.append("\n경도 : 							" + longitude);
+		builder.append("\n통신사 : 							" + net);
 
 		return builder.toString();
 	}
