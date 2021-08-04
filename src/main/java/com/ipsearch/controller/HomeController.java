@@ -35,6 +35,7 @@ public class HomeController {
 			int returnCode = geoData.getReturnCode();
 
 			if(returnCode == 0) {
+				model.addAttribute("returnType", "ip");
 				model.addAttribute("returnData", geoData);
 				msg = geoData.print();
 			}
@@ -43,11 +44,12 @@ public class HomeController {
 			}
 		}
 		else if(searchService.checkKORDomain(query)){
-			DomainData domainData = searchService.getDomainData(query);
+			DomainData domainData = searchService.getDomainData(query.replace("http://www.", "").replace("https://www.", "").replace("www.", ""));
 
 			int returnCode = domainData.getReturnCode();
 
 			if(returnCode == 0) {
+				model.addAttribute("returnType", "domain");
 				model.addAttribute("returnData", domainData);
 				msg = domainData.print();
 			}

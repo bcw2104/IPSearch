@@ -14,9 +14,9 @@ public class DomainData {
 	private String infoYN;
 	private String agency;
 	private String agencyUrl;
+	private String errorMsg;
 	private double latitude;
 	private double longitude;
-	private String errorMsg;
 
 	public DomainData() {
 		this.returnCode = 0;
@@ -32,6 +32,7 @@ public class DomainData {
 		this.infoYN = null;
 		this.agency = null;
 		this.agencyUrl = null;
+
 		this.latitude = 0;
 		this.longitude = 0;
 
@@ -142,6 +143,14 @@ public class DomainData {
 		this.agencyUrl = agencyUrl;
 	}
 
+	public String getErrorMsg() {
+		return errorMsg;
+	}
+
+	public void setErrorMsg(String errorMsg) {
+		this.errorMsg = errorMsg;
+	}
+
 	public double getLatitude() {
 		return latitude;
 	}
@@ -156,14 +165,6 @@ public class DomainData {
 
 	public void setLongitude(double longitude) {
 		this.longitude = longitude;
-	}
-
-	public String getErrorMsg() {
-		return errorMsg;
-	}
-
-	public void setErrorMsg(String errorMsg) {
-		this.errorMsg = errorMsg;
 	}
 
 	public String print() {
@@ -182,8 +183,6 @@ public class DomainData {
 		builder.append("\n정보 공개 여부 : 					" + infoYN);
 		builder.append("\n등록대행자 : 						" + agency);
 		builder.append("\n등록대행자 URL : 				" + agencyUrl);
-		builder.append("\n위도 : 							" + latitude);
-		builder.append("\n경도 : 							" + longitude);
 		builder.append("\n\n\n국가 인터넷주소(도메인, IP주소/AS번호) 관리기관인 한국인터넷진흥원으로부터 제공받은 데이터입니다.");
 
 		return builder.toString();

@@ -24,7 +24,7 @@
 	<div class="container my-5">
 		<form action="/" method="get">
 			<div class="input-group">
-				<input type="text" id="search" name="search" class="form-control col-4" placeholder="IPv4 주소"/>
+				<input type="text" id="search" name="search" class="form-control col-4" placeholder="IPv4 또는 도메인을 입력하세요."/>
 				<div class="input-group-append p-0">
 					<input type="submit" class="btn btn-primary" value="검색"/>
 				</div>
@@ -50,33 +50,73 @@
 						<c:if test="${success}">
 						<!-- Naver Dynamic Map -->
 						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${requestScope.clientId}"></script>
+						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=${requestScope.clientId}&submodules=geocoder"></script>
 						<script type="text/javascript">
 							$(document).ready(function() {
-								var latlng = new naver.maps.LatLng(${requestScope.returnData.latitude}, ${requestScope.returnData.longitude});
+								var type = "${requestScope.returnType}";
 								var address = $("#position").text();
-								var map = new naver.maps.Map('map', {
-									mapTypeId : naver.maps.MapTypeId.NORMAL,
-								    center: latlng,
-								    zoom: 16,
-								    zoomOrigin : latlng
-								});
 
-								var marker = new naver.maps.Marker({
-								    position: latlng,
-								    map: map,
-								    animation : 2,
-								    title : address
-								});
+								if(type == "domain"){
+									naver.maps.Service.geocode({
+								        address: address
+								    }, function(status, response) {
+								        if (status == naver.maps.Service.Status.OK) {
+									        var latitude = response.result.items[0].point.y;
+									        var longitude = response.result.items[0].point.x;
 
-								var circle = new naver.maps.Circle({
-									center: latlng,
-									radius : 200,
-									fillColor : "#1833e5",
-									fillOpacity : 0.05,
-								    map: map
-								});
+									        mapConfig(latitude,longitude);
+								        }
+								    });
+								}
+								else{
+									var latitude = ${requestScope.returnData.latitude};
+									var longitude = ${requestScope.returnData.longitude};
+									mapConfig(latitude,longitude);
+								}
 
-								$("#tab-map").trigger("click");
+								function mapConfig(latitude, longitude){
+									var latlng = new naver.maps.LatLng(latitude, longitude);
+
+									var map = new naver.maps.Map('map', {
+										mapTypeId : naver.maps.MapTypeId.NORMAL,
+									    center: latlng,
+									    zoom: 16,
+									    zoomOrigin : latlng,
+									    zoomControl: true,
+								        zoomControlOptions: {
+								            style: naver.maps.ZoomControlStyle.LARGE,
+								            position: naver.maps.Position.TOP_RIGHT
+								        },
+									    mapTypeControl : true,
+									    scaleControl: true,
+									    scaleControlOptions: {
+									        position: naver.maps.Position.RIGHT_BOTTOM
+									    },
+									    logoControl: false,
+									    mapDataControl: true,
+								        mapDataControlOptions: {
+								            position: naver.maps.Position.LEFT_BOTTOM
+								        }
+
+									});
+
+									var marker = new naver.maps.Marker({
+									    position: latlng,
+									    map: map,
+									    animation : 2,
+									    title : address
+									});
+
+									var circle = new naver.maps.Circle({
+										center: latlng,
+										radius : 200,
+										fillColor : "#1833e5",
+										fillOpacity : 0.05,
+									    map: map
+									});
+
+									$("#tab-map").trigger("click");
+								}
 							});
 						</script>
 						</c:if>
