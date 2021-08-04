@@ -43,11 +43,12 @@ IP 정보 및 위치 조회 프로그램
 ### 📈 개발 순서
 - Version 1 -> Naver GeoLocation 관련 서비스 구현 <strong>(완료)</strong>
   * 사용자(Client)의 IP주소 표시 기능
-  * IP검색 기능 
+  * 검색된 IP의 정보 표시 
   * UI 구현
 - Version 2 -> Naver Web Dynamic Map 관련 서비스 구현 <strong>(완료)</strong>
   * 검색된 IP의 위치를 지도에 표시
   * UI 개선
-- Version 3 -> Whois 관련 서비스 구현 
-  * Domain검색 기능
+- Version 3 -> Whois + Geocoding API를 통한 도메인 검색 서비스 구현 <strong>(완료)</strong>
+  * 검색된 Domain 관련 정보 표시
   * 검색된 Domain의 위치를 지도에 표시
+  * UI 개선
