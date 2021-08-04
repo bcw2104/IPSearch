@@ -16,7 +16,6 @@ public class ServletAppContext implements WebMvcConfigurer {
 	@Override
 	public void configureViewResolvers(ViewResolverRegistry registry) {
 		WebMvcConfigurer.super.configureViewResolvers(registry);
-
 		registry.jsp("/WEB-INF/views/",".jsp");
 	}
 
@@ -26,5 +25,4 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 		registry.addResourceHandler("/resources/**").addResourceLocations("/resources/");
 	}
-
 }

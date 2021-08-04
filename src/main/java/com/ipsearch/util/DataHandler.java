@@ -4,6 +4,7 @@ import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import com.ipsearch.object.DomainData;
 import com.ipsearch.object.GeoData;
 
 public class DataHandler {
@@ -31,9 +32,7 @@ public class DataHandler {
 			geoData.setRequestId(object.get("requestId").toString());
 			geoData.setCountry(locationData.get("country").toString());
 			geoData.setCode(locationData.get("code").toString());
-			geoData.setR1(locationData.get("r1").toString());
-			geoData.setR2(locationData.get("r2").toString());
-			geoData.setR3(locationData.get("r3").toString());
+			geoData.setAddr(locationData.get("r1").toString() + " " + locationData.get("r2").toString() + " " + locationData.get("r3").toString());
 			geoData.setLatitude(Double.parseDouble(locationData.get("lat").toString()));
 			geoData.setLongitude(Double.parseDouble(locationData.get("long").toString()));
 			geoData.setNet(locationData.get("net").toString());
@@ -42,5 +41,34 @@ public class DataHandler {
 		geoData.setReturnCode(returnCode);
 
 		return geoData;
+	}
+
+	public DomainData convertStringToDomainData(String jsonString) throws Exception {
+		JSONObject object = (JSONObject) convertStringToJson(jsonString).get("whois");
+		DomainData domainData = new DomainData();
+
+		object = (JSONObject) object.get("krdomain");
+
+		if(object.containsKey("error")) {
+			object = (JSONObject) object.get("error");
+			domainData.setReturnCode(Integer.parseInt(object.get("error_code").toString()));
+			domainData.setErrorMsg(object.get("error_msg").toString().replace("(W)", "").replace(". ", ".\n"));
+		}
+		else{
+			domainData.setName(object.get("name").toString());
+			domainData.setRegName(object.get("regName").toString());
+			domainData.setAddr(object.get("addr").toString());
+			domainData.setPost(object.get("post").toString());
+			domainData.setAdminName(object.get("adminName").toString());
+			domainData.setAdminEmail(object.get("adminEmail").toString());
+			domainData.setAdminPhone(object.get("adminPhone").toString());
+			domainData.setLastUpdatedDate(object.get("lastUpdatedDate").toString());
+			domainData.setRegDate(object.get("regDate").toString());
+			domainData.setInfoYN(object.get("infoYN").toString());
+			domainData.setAgency(object.get("agency").toString());
+			domainData.setAgencyUrl(object.get("agency_url").toString());
+		}
+
+		return domainData;
 	}
 }

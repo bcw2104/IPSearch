@@ -9,6 +9,7 @@ import org.springframework.core.env.Environment;
 
 import com.ipsearch.util.GeoLocationClient;
 import com.ipsearch.util.MapClient;
+import com.ipsearch.util.WhoisClient;
 import com.ipsearch.util.DataHandler;
 
 @Configuration
@@ -30,6 +31,13 @@ public class RootContext {
 		MapClient mapClient = new MapClient(env.getProperty("key.clientId"));
 
 		return mapClient;
+	}
+
+	@Bean
+	public WhoisClient whoisClient() {
+		WhoisClient whoisClient = new WhoisClient(env.getProperty("key.whois"));
+
+		return whoisClient;
 	}
 
 	@Bean
