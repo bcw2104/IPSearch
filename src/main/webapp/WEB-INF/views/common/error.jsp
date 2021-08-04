@@ -19,15 +19,22 @@
 </head>
 <body class="body-font">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
-	<div class="container my-5">
-		<h1>${requestScope['javax.servlet.error.status_code']} Error!!</h1>
-		<c:if test="${requestScope['javax.servlet.error.status_code'] == 404}">
-			<span class="mr-2 font-18">존재하지 않는 페이지입니다.</span>
+	<div class="container my-5 py-5" style="height: 700px">
+		<h1 class="text-danger font-weight-bold text-center" style="font-size: 200px;">${requestScope.status}</h1>
+		<div class="mb-5 font-32 text-center">
+		<c:if test="${requestScope.status == 400}">
+			잘못된 요청이 발생했습니다.
 		</c:if>
-		<c:if test="${requestScope['javax.servlet.error.status_code'] == 500}">
-			<span class="mr-2 font-18">서버에 오류가 발생했습니다.</span>
+		<c:if test="${requestScope.status == 404}">
+			존재하지 않는 페이지입니다.
 		</c:if>
-		<a href="/"><button type="button" class="btn btn-default" style="width:80px">홈으로</button></a>
+		<c:if test="${requestScope.status == 500}">
+			서버에 오류가 발생했습니다.
+		</c:if>
+		</div>
+		<div class="pt-5 text-center">
+			<a href="/"><button type="button" class="btn btn-primary w-25 font-20" style="height: 50px;">홈으로</button></a>
+		</div>
    	</div>
    	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
 </body>
