@@ -1,5 +1,5 @@
 package com.ipsearch.util;
 
 public class GlobalPath {
-	public final static String root = "/projects/ipsearch/";
+	public final static String root = "/ipsearch/";
 }
