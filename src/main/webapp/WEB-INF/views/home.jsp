@@ -7,7 +7,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>IP Search</title>
+<meta http-equiv='content-language' content='ko'>
+
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<meta name="author" content="bcw2104">
+<meta name="description" content="도메인 또는 IP 주소를 검색하고 위치를 표시하는 지도와 관련 정보를 제공받으세요.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="IP Search | 도메인 및 IP 위치 검색">
+<meta property="og:description" content="도메인 또는 IP 주소를 검색하여 위치를 표시하는 지도와 관련 정보를 제공받으세요." >
+<meta property="og:image" content="<%=GlobalPath.root%>resources/images/logo.png">
+<meta property="og:url" content="https://www.lifencoding.com${requestScope['javax.servlet.forward.request_uri']}"/>
+<meta property="og:site_name" content="IP Search">
+
+<title>IP Search | 도메인 및 IP 위치 검색</title>
 
 <!-- Bootstrap4 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
@@ -17,7 +31,6 @@
 
 <link rel="stylesheet" href="<%=GlobalPath.root%>resources/css/common-min.css">
 <link rel="stylesheet" href="<%=GlobalPath.root%>resources/css/font-min.css">
-
 </head>
 <body class="body-font">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
@@ -25,7 +38,7 @@
 	<div class="container my-5">
 		<form action="<%=GlobalPath.root%>" method="get">
 			<div class="input-group">
-				<input type="text" id="search" name="search" class="form-control col-4" placeholder="IPv4 또는 도메인을 입력하세요."/>
+				<input type="text" id="search" name="search" class="form-control col-8" placeholder="IPv4 또는 도메인"/>
 				<div class="input-group-append p-0">
 					<input type="submit" class="btn btn-primary" value="검색"/>
 				</div>
@@ -123,7 +136,7 @@
 						</c:if>
 					</div>
 					<div class="tab-pane fade container show active p-0" id="info">
-						<textarea readonly="readonly" disabled="disabled" class="w-100 p-4" style="min-height:500px">${requestScope.returnContent}</textarea>
+						<textarea readonly="readonly" wrap="off" disabled="disabled" class="w-100 p-4" style="min-height:500px">${requestScope.returnContent}</textarea>
 					</div>
 				</div>
 	   	</div>

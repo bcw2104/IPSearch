@@ -6,7 +6,21 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>IP Search</title>
+<meta http-equiv='content-language' content='ko'>
+
+<meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests">
+<meta name="viewport" content="width=device-width, initial-scale=1" >
+<meta name="author" content="bcw2104">
+<meta name="description" content="도메인 또는 IP 주소를 검색하여 위치를 표시하는 지도와 관련 정보를 제공받으세요.">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="IP Search | 도메인 및 IP 위치 검색">
+<meta property="og:description" content="도메인 또는 IP 주소를 검색하여 위치를 표시하는 지도와 관련 정보를 제공받으세요." >
+<meta property="og:image" content="<%=GlobalPath.root%>resources/images/logo.png">
+<meta property="og:url" content="https://www.lifencoding.com${requestScope['javax.servlet.forward.request_uri']}"/>
+<meta property="og:site_name" content="IP Search">
+
+<title>IP Search | 도메인 및 IP 위치 검색</title>
 
 <!-- Bootstrap4 -->
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css">
