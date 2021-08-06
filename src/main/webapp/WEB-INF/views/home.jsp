@@ -1,3 +1,4 @@
+<%@page import="com.ipsearch.util.GlobalPath"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 <c:set var="success" value="${requestScope.returnData != null}"></c:set>
@@ -14,15 +15,15 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.0/umd/popper.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
 
-<link rel="stylesheet" href="/resources/css/common-min.css">
-<link rel="stylesheet" href="/resources/css/font-min.css">
+<link rel="stylesheet" href="<%=GlobalPath.root%>resources/css/common-min.css">
+<link rel="stylesheet" href="<%=GlobalPath.root%>resources/css/font-min.css">
 
 </head>
 <body class="body-font">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 
 	<div class="container my-5">
-		<form action="/" method="get">
+		<form action="<%=GlobalPath.root%>" method="get">
 			<div class="input-group">
 				<input type="text" id="search" name="search" class="form-control col-4" placeholder="IPv4 또는 도메인을 입력하세요."/>
 				<div class="input-group-append p-0">

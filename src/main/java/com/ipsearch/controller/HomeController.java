@@ -29,6 +29,8 @@ public class HomeController {
 			query = clientIp;
 		}
 
+		query = query.toLowerCase();
+
 		if(searchService.checkIPv4Validation(query)) {
 			GeoData geoData = searchService.getIpData(query);
 
@@ -44,7 +46,7 @@ public class HomeController {
 			}
 		}
 		else if(searchService.checkKORDomain(query)){
-			DomainData domainData = searchService.getDomainData(query.replace("http://www.", "").replace("https://www.", "").replace("www.", ""));
+			DomainData domainData = searchService.getDomainData(query.replace("http://", "").replace("https://", "").replace("www.", ""));
 
 			int returnCode = domainData.getReturnCode();
 
