@@ -24,43 +24,62 @@ public class HomeController {
 	public String home(@RequestParam(name = "search",required = false) String query,Model model,HttpServletRequest request) throws Exception {
 		String clientIp = searchService.getRequestIp(request);
 		String msg = null;
+		boolean needRequest = true;
 
-		if(query == null) {
+		if(query == null || query.length() == 0) {
 			query = clientIp;
-		}
 
-		query = query.toLowerCase();
+			if(request.getSession().getAttribute("clientIp") != null) {
+				needRequest = false;
+				GeoData geoData =  (GeoData) request.getSession().getAttribute("clientIp");
 
-		if(searchService.checkIPv4Validation(query)) {
-			GeoData geoData = searchService.getIpData(query);
-
-			int returnCode = geoData.getReturnCode();
-
-			if(returnCode == 0) {
 				model.addAttribute("returnType", "ip");
 				model.addAttribute("returnData", geoData);
 				msg = geoData.print();
-			}
-			else {
-				msg = searchService.returnMsg(returnCode);
+
 			}
 		}
-		else if(searchService.checkKORDomain(query)){
-			DomainData domainData = searchService.getDomainData(query.replace("http://", "").replace("https://", "").replace("www.", ""));
 
-			int returnCode = domainData.getReturnCode();
+		if(needRequest) {
+			if(searchService.checkIPv4Validation(query)) {
+				GeoData geoData = searchService.getIpData(query);
 
-			if(returnCode == 0) {
-				model.addAttribute("returnType", "domain");
-				model.addAttribute("returnData", domainData);
-				msg = domainData.print();
+				int returnCode = geoData.getReturnCode();
+
+				if(returnCode == 0) {
+					model.addAttribute("returnType", "ip");
+					model.addAttribute("returnData", geoData);
+
+					if(query.equals(clientIp) && request.getSession().getAttribute("clientIp") == null) {
+						request.getSession().setAttribute("clientIp", geoData);
+					}
+					msg = geoData.print();
+				}
+				else {
+					msg = searchService.returnMsg(returnCode);
+				}
 			}
-			else {
-				msg = domainData.getErrorMsg();
+			else{
+				query = searchService.makeDomainFormat(query);
+
+				if(searchService.checkKORDomain(query)) {
+					DomainData domainData = searchService.getDomainData(query);
+
+					int returnCode = domainData.getReturnCode();
+
+					if(returnCode == 0) {
+						model.addAttribute("returnType", "domain");
+						model.addAttribute("returnData", domainData);
+						msg = domainData.print();
+					}
+					else {
+						msg = domainData.getErrorMsg();
+					}
+				}
+				else {
+					msg = searchService.returnMsg(404);
+				}
 			}
-		}
-		else {
-			msg = searchService.returnMsg(404);
 		}
 
 		model.addAttribute("query", query);

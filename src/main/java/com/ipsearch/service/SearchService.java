@@ -84,6 +84,16 @@ public class SearchService{
 		return Pattern.matches(iPv4Pattern, query);
 	}
 
+	public String makeDomainFormat(String query) {
+		query = query.toLowerCase().trim();
+		query = query.replace("http://", "").replace("https://", "").replace("www.", "");
+
+		if(query.endsWith("/"))
+			query = query.substring(0, query.length()-1);
+
+		return query;
+	}
+
 	public boolean checkKORDomain(String query) {
 		return query.endsWith(".kr") || query.endsWith(".ÇÑ±¹");
 	}

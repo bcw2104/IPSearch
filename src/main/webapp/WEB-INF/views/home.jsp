@@ -1,7 +1,7 @@
 <%@page import="com.ipsearch.util.GlobalPath"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="success" value="${requestScope.returnData != null}"></c:set>
+<c:set var="addrExist" value="${requestScope.returnData != null && requestScope.returnData.addr != null}"></c:set>
 
 <!DOCTYPE html>
 <html>
@@ -56,80 +56,86 @@
 						<small class="text-danger font-weight-bold">※ 주의사항 : 제공되는 위치 정보는 정확하지 않을 수 있습니다	.</small>
 						<div class="mt-2">
 							<span>위치:</span>
-							<span id="position">${success ? requestScope.returnData.addr : '위치 정보를 찾을 수 없습니다.'}</span>
+							<span id="position">${addrExist ? requestScope.returnData.addr : '위치 정보를 찾을 수 없습니다.'}</span>
 						</div>
 					</div>
 					<div class="tab-pane container fade" id="map">
 						<div id="map" style="width:100%;height:500px;"></div>
-						<c:if test="${success}">
+						<c:if test="${addrExist}">
 						<!-- Naver Dynamic Map -->
 						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${requestScope.clientId}"></script>
 						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=${requestScope.clientId}&submodules=geocoder"></script>
 						<script type="text/javascript">
 							$(document).ready(function() {
-								var type = "${requestScope.returnType}";
-								var address = $("#position").text();
-
-								if(type == "domain"){
-									naver.maps.Service.geocode({
-								        address: address
-								    }, function(status, response) {
-								        if (status == naver.maps.Service.Status.OK) {
-									        var latitude = response.result.items[0].point.y;
-									        var longitude = response.result.items[0].point.x;
-
-									        mapConfig(latitude,longitude);
-								        }
-								    });
+								if (window.location.protocol == "http:") {
+									var restOfUrl = window.location.href.substr(5);
+									window.location.replace("https:" + restOfUrl);
 								}
 								else{
-									var latitude = ${requestScope.returnData.latitude};
-									var longitude = ${requestScope.returnData.longitude};
-									mapConfig(latitude,longitude);
-								}
+									var type = "${requestScope.returnType}";
+									var address = "${requestScope.returnData.addr}"
 
-								function mapConfig(latitude, longitude){
-									var latlng = new naver.maps.LatLng(latitude, longitude);
+									if(type == "domain"){
+										naver.maps.Service.geocode({
+									        address: address
+									    }, function(status, response) {
+									        if (status == naver.maps.Service.Status.OK) {
+										        var latitude = response.result.items[0].point.y;
+										        var longitude = response.result.items[0].point.x;
 
-									var map = new naver.maps.Map('map', {
-										mapTypeId : naver.maps.MapTypeId.NORMAL,
-									    center: latlng,
-									    zoom: 16,
-									    zoomOrigin : latlng,
-									    zoomControl: true,
-								        zoomControlOptions: {
-								            style: naver.maps.ZoomControlStyle.LARGE,
-								            position: naver.maps.Position.TOP_RIGHT
-								        },
-									    mapTypeControl : true,
-									    scaleControl: true,
-									    scaleControlOptions: {
-									        position: naver.maps.Position.RIGHT_BOTTOM
-									    },
-									    logoControl: false,
-									    mapDataControl: true,
-								        mapDataControlOptions: {
-								            position: naver.maps.Position.LEFT_BOTTOM
-								        }
+										        mapConfig(latitude,longitude);
+									        }
+									    });
+									}
+									else{
+										var latitude = ${requestScope.returnData.latitude};
+										var longitude = ${requestScope.returnData.longitude};
+										mapConfig(latitude,longitude);
+									}
 
-									});
+									function mapConfig(latitude, longitude){
+										var latlng = new naver.maps.LatLng(latitude, longitude);
 
-									var marker = new naver.maps.Marker({
-									    position: latlng,
-									    map: map,
-									    animation : 2,
-									    title : address
-									});
+										var map = new naver.maps.Map('map', {
+											mapTypeId : naver.maps.MapTypeId.NORMAL,
+										    center: latlng,
+										    zoom: 16,
+										    zoomOrigin : latlng,
+										    zoomControl: true,
+									        zoomControlOptions: {
+									            style: naver.maps.ZoomControlStyle.LARGE,
+									            position: naver.maps.Position.TOP_RIGHT
+									        },
+										    mapTypeControl : true,
+										    scaleControl: true,
+										    scaleControlOptions: {
+										        position: naver.maps.Position.RIGHT_BOTTOM
+										    },
+										    logoControl: false,
+										    mapDataControl: true,
+									        mapDataControlOptions: {
+									            position: naver.maps.Position.LEFT_BOTTOM
+									        }
 
-									var circle = new naver.maps.Circle({
-										center: latlng,
-										radius : 200,
-										fillColor : "#1833e5",
-										fillOpacity : 0.05,
-									    map: map
-									});
+										});
 
-									$("#tab-map").trigger("click");
+										var marker = new naver.maps.Marker({
+										    position: latlng,
+										    map: map,
+										    animation : 2,
+										    title : address
+										});
+
+										var circle = new naver.maps.Circle({
+											center: latlng,
+											radius : 200,
+											fillColor : "#1833e5",
+											fillOpacity : 0.05,
+										    map: map
+										});
+
+										$("#tab-map").trigger("click");
+									}
 								}
 							});
 						</script>

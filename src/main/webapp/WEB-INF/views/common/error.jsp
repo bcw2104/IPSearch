@@ -35,20 +35,41 @@
 <body class="body-font">
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	<div class="container my-5 py-5" style="height: 700px">
-		<h1 class="text-danger font-weight-bold text-center" style="font-size: 200px;">${requestScope.status}</h1>
-		<div class="mb-5 font-32 text-center">
+		<c:if test="${requestScope.status != 429}">
+			<h1 class="text-danger m-5 font-weight-bold text-center" style="font-size: 100px;">${requestScope.status}</h1>
+		</c:if>
+		<c:if test="${requestScope.status == 429}">
+			<h1 class="text-danger m-5 font-weight-bold font-32 text-center">과도한 요청으로 검색이 잠시 동안 제한됩니다.</h1>
+		</c:if>
+
+		<div class="mb-5 font-28 text-center">
 		<c:if test="${requestScope.status == 400}">
 			잘못된 요청이 발생했습니다.
 		</c:if>
 		<c:if test="${requestScope.status == 404}">
 			존재하지 않는 페이지입니다.
 		</c:if>
+		<c:if test="${requestScope.status == 429}">
+			<script type="text/javascript">
+				var time = ${waitTime}
+				var timer = setInterval(function() {
+					$("#waitTime").html(time);
+					time--;
+
+					if(time<0){
+						clearInterval(timer);
+						$("#homeBtn").removeAttr("disabled");
+					}
+				},1000);
+			</script>
+			<span id="waitTime"></span>초 후에 검색이 가능합니다.
+		</c:if>
 		<c:if test="${requestScope.status == 500}">
 			서버에 오류가 발생했습니다.
 		</c:if>
 		</div>
 		<div class="pt-5 text-center">
-			<a href="/"><button type="button" class="btn btn-primary w-25 font-20" style="height: 50px;">홈으로</button></a>
+			<a href="<%=GlobalPath.root%>"><button type="button" id="homeBtn"  class="btn btn-primary w-25 font-20"  ${requestScope.status == 429 ? 'disabled="disabled"' : ''} style="height: 50px;">홈으로</button></a>
 		</div>
    	</div>
    	<jsp:include page="/WEB-INF/views/common/footer.jsp"></jsp:include>
