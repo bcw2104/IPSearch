@@ -29,8 +29,6 @@ public class HomeController {
 			query = clientIp;
 		}
 
-		query = query.toLowerCase();
-
 		if(searchService.checkIPv4Validation(query)) {
 			GeoData geoData = searchService.getIpData(query);
 
@@ -45,22 +43,26 @@ public class HomeController {
 				msg = searchService.returnMsg(returnCode);
 			}
 		}
-		else if(searchService.checkKORDomain(query)){
-			DomainData domainData = searchService.getDomainData(query.replace("http://", "").replace("https://", "").replace("www.", ""));
+		else{
+			query = searchService.makeDomainFormat(query);
 
-			int returnCode = domainData.getReturnCode();
+			if(searchService.checkKORDomain(query)) {
+				DomainData domainData = searchService.getDomainData(query);
 
-			if(returnCode == 0) {
-				model.addAttribute("returnType", "domain");
-				model.addAttribute("returnData", domainData);
-				msg = domainData.print();
+				int returnCode = domainData.getReturnCode();
+
+				if(returnCode == 0) {
+					model.addAttribute("returnType", "domain");
+					model.addAttribute("returnData", domainData);
+					msg = domainData.print();
+				}
+				else {
+					msg = domainData.getErrorMsg();
+				}
 			}
 			else {
-				msg = domainData.getErrorMsg();
+				msg = searchService.returnMsg(404);
 			}
-		}
-		else {
-			msg = searchService.returnMsg(404);
 		}
 
 		model.addAttribute("query", query);

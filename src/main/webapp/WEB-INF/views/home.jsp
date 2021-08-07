@@ -1,7 +1,7 @@
 <%@page import="com.ipsearch.util.GlobalPath"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
-<c:set var="success" value="${requestScope.returnData != null}"></c:set>
+<c:set var="addrExist" value="${requestScope.returnData != null && requestScope.returnData.addr != null}"></c:set>
 
 <!DOCTYPE html>
 <html>
@@ -56,12 +56,12 @@
 						<small class="text-danger font-weight-bold">※ 주의사항 : 제공되는 위치 정보는 정확하지 않을 수 있습니다	.</small>
 						<div class="mt-2">
 							<span>위치:</span>
-							<span id="position">${success ? requestScope.returnData.addr : '위치 정보를 찾을 수 없습니다.'}</span>
+							<span id="position">${addrExist ? requestScope.returnData.addr : '위치 정보를 찾을 수 없습니다.'}</span>
 						</div>
 					</div>
 					<div class="tab-pane container fade" id="map">
 						<div id="map" style="width:100%;height:500px;"></div>
-						<c:if test="${success}">
+						<c:if test="${addrExist} ">
 						<!-- Naver Dynamic Map -->
 						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${requestScope.clientId}"></script>
 						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=${requestScope.clientId}&submodules=geocoder"></script>
@@ -73,7 +73,7 @@
 								}
 								else{
 									var type = "${requestScope.returnType}";
-									var address = $("#position").text();
+									var address = "${requestScope.returnData.addr}"
 
 									if(type == "domain"){
 										naver.maps.Service.geocode({
