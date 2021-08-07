@@ -61,7 +61,7 @@
 					</div>
 					<div class="tab-pane container fade" id="map">
 						<div id="map" style="width:100%;height:500px;"></div>
-						<c:if test="${addrExist} ">
+						<c:if test="${addrExist}">
 						<!-- Naver Dynamic Map -->
 						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?ncpClientId=${requestScope.clientId}"></script>
 						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=${requestScope.clientId}&submodules=geocoder"></script>
