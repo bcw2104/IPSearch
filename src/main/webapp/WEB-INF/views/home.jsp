@@ -67,75 +67,69 @@
 						<script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=${requestScope.clientId}&submodules=geocoder"></script>
 						<script type="text/javascript">
 							$(document).ready(function() {
-								if (window.location.protocol == "http:") {
-									var restOfUrl = window.location.href.substr(5);
-									window.location.replace("https:" + restOfUrl);
+								var type = "${requestScope.returnType}";
+								var address = "${requestScope.returnData.addr}"
+
+								if(type == "domain"){
+									naver.maps.Service.geocode({
+								        address: address
+								    }, function(status, response) {
+								        if (status == naver.maps.Service.Status.OK) {
+									        var latitude = response.result.items[0].point.y;
+									        var longitude = response.result.items[0].point.x;
+
+									        mapConfig(latitude,longitude);
+								        }
+								    });
 								}
 								else{
-									var type = "${requestScope.returnType}";
-									var address = "${requestScope.returnData.addr}"
+									var latitude = ${requestScope.returnData.latitude};
+									var longitude = ${requestScope.returnData.longitude};
+									mapConfig(latitude,longitude);
+								}
 
-									if(type == "domain"){
-										naver.maps.Service.geocode({
-									        address: address
-									    }, function(status, response) {
-									        if (status == naver.maps.Service.Status.OK) {
-										        var latitude = response.result.items[0].point.y;
-										        var longitude = response.result.items[0].point.x;
+								function mapConfig(latitude, longitude){
+									var latlng = new naver.maps.LatLng(latitude, longitude);
 
-										        mapConfig(latitude,longitude);
-									        }
-									    });
-									}
-									else{
-										var latitude = ${requestScope.returnData.latitude};
-										var longitude = ${requestScope.returnData.longitude};
-										mapConfig(latitude,longitude);
-									}
+									var map = new naver.maps.Map('map', {
+										mapTypeId : naver.maps.MapTypeId.NORMAL,
+									    center: latlng,
+									    zoom: 16,
+									    zoomOrigin : latlng,
+									    zoomControl: true,
+								        zoomControlOptions: {
+								            style: naver.maps.ZoomControlStyle.LARGE,
+								            position: naver.maps.Position.TOP_RIGHT
+								        },
+									    mapTypeControl : true,
+									    scaleControl: true,
+									    scaleControlOptions: {
+									        position: naver.maps.Position.RIGHT_BOTTOM
+									    },
+									    logoControl: false,
+									    mapDataControl: true,
+								        mapDataControlOptions: {
+								            position: naver.maps.Position.LEFT_BOTTOM
+								        }
 
-									function mapConfig(latitude, longitude){
-										var latlng = new naver.maps.LatLng(latitude, longitude);
+									});
 
-										var map = new naver.maps.Map('map', {
-											mapTypeId : naver.maps.MapTypeId.NORMAL,
-										    center: latlng,
-										    zoom: 16,
-										    zoomOrigin : latlng,
-										    zoomControl: true,
-									        zoomControlOptions: {
-									            style: naver.maps.ZoomControlStyle.LARGE,
-									            position: naver.maps.Position.TOP_RIGHT
-									        },
-										    mapTypeControl : true,
-										    scaleControl: true,
-										    scaleControlOptions: {
-										        position: naver.maps.Position.RIGHT_BOTTOM
-										    },
-										    logoControl: false,
-										    mapDataControl: true,
-									        mapDataControlOptions: {
-									            position: naver.maps.Position.LEFT_BOTTOM
-									        }
+									var marker = new naver.maps.Marker({
+									    position: latlng,
+									    map: map,
+									    animation : 2,
+									    title : address
+									});
 
-										});
+									var circle = new naver.maps.Circle({
+										center: latlng,
+										radius : 200,
+										fillColor : "#1833e5",
+										fillOpacity : 0.05,
+									    map: map
+									});
 
-										var marker = new naver.maps.Marker({
-										    position: latlng,
-										    map: map,
-										    animation : 2,
-										    title : address
-										});
-
-										var circle = new naver.maps.Circle({
-											center: latlng,
-											radius : 200,
-											fillColor : "#1833e5",
-											fillOpacity : 0.05,
-										    map: map
-										});
-
-										$("#tab-map").trigger("click");
-									}
+									$("#tab-map").trigger("click");
 								}
 							});
 						</script>
