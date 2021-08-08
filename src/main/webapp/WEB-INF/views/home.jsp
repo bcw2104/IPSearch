@@ -53,7 +53,7 @@
 				</ul>
 				<div class="tab-content py-3">
 					<div class="my-3">
-						<small class="text-danger font-weight-bold">※ 주의사항 : 제공되는 위치 정보는 정확하지 않을 수 있습니다	.</small>
+						<small class="text-danger font-weight-bold">※ 주의사항 : 제공되는 위치 정보는 정확하지 않을 수 있습니다.</small>
 						<div class="mt-2">
 							<span>위치:</span>
 							<span id="position">${addrExist ? requestScope.returnData.addr : '위치 정보를 찾을 수 없습니다.'}</span>

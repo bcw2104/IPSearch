@@ -36,10 +36,10 @@
 	<jsp:include page="/WEB-INF/views/common/header.jsp"></jsp:include>
 	<div class="container my-5 py-5" style="height: 700px">
 		<c:if test="${requestScope.status != 429}">
-			<h1 class="text-danger m-5 font-weight-bold text-center" style="font-size: 100px;">${requestScope.status}</h1>
+			<h1 class="text-danger my-5 font-weight-bold text-center" style="font-size: 100px;">${requestScope.status}</h1>
 		</c:if>
 		<c:if test="${requestScope.status == 429}">
-			<h1 class="text-danger m-5 font-weight-bold font-32 text-center">과도한 요청으로 검색이 잠시 동안 제한됩니다.</h1>
+			<h1 class="text-danger my-5 font-weight-bold font-32 text-center">과도한 요청으로 검색이 잠시 동안 제한됩니다.</h1>
 		</c:if>
 
 		<div class="mb-5 font-28 text-center">
