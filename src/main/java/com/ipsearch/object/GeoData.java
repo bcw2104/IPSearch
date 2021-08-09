@@ -95,6 +95,7 @@ public class GeoData {
 		builder.append("\n위도 : 							" + latitude);
 		builder.append("\n경도 : 							" + longitude);
 		builder.append("\n통신사 : 							" + net);
+		builder.append("\n\n\nNaver GeoLocation으로부터 제공받은 데이터입니다.");
 
 		return builder.toString();
 	}
