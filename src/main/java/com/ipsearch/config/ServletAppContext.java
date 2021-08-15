@@ -9,6 +9,7 @@ import org.springframework.web.servlet.config.annotation.ViewResolverRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import com.ipsearch.Interceptor.ClientRequestTimeChecker;
+import com.ipsearch.Interceptor.HttpsCheckInterceptor;
 
 
 @Configuration
@@ -31,6 +32,7 @@ public class ServletAppContext implements WebMvcConfigurer {
 
 	@Override
 	public void addInterceptors(InterceptorRegistry registry) {
+		registry.addInterceptor(new HttpsCheckInterceptor()).addPathPatterns("/*");
 		registry.addInterceptor(new ClientRequestTimeChecker()).addPathPatterns("/");
 	}
 }
