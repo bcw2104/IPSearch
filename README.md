@@ -21,7 +21,7 @@ IP 정보 및 위치 조회 사이트 구현
 
 <br/>
 
-### 🛠️ Open API
+### 🛠️ API
 - Whois Api
 - Naver GeoLocation
 - Naver Web Dynamic Map 
